@@ -36,6 +36,6 @@
     "request": "^2.88.2",
     "shelljs": "^0.8.5",
     "valid-url": "^1.0.9",
-    "whatsapp-web.js": "^1.21.0"
+    "whatsapp-web.js": "^1.22.2-alpha.0"
   }
 }
