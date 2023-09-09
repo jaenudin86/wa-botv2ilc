@@ -5,7 +5,7 @@ const axios = require("axios");
 const shelljs = require("shelljs");
 const qrcodes = require("qrcode");
 const config = require("./config.json");
-const { Client, LocalAuth } = require("whatsapp-web.js");
+const { Client, Location, List, Buttons, LocalAuth } = require("whatsapp-jaenudin.js");
 
 process.title = "whatsapp-node-api";
 global.client = new Client({
