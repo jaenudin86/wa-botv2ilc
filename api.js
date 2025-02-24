@@ -5,12 +5,18 @@ const axios = require("axios");
 const shelljs = require("shelljs");
 const qrcodes = require("qrcode");
 const config = require("./config.json");
-const { Client, Location, List, Buttons, LocalAuth } = require("whatsapp-jaenudin.js");
+const { Client, Location, List, Buttons, LocalAuth } = require("whatsapp-web.js");
 
 process.title = "whatsapp-node-api";
 global.client = new Client({
   authStrategy: new LocalAuth(),
   puppeteer: { headless: true },
+  webVersionCache: {
+    type: 'remote',
+    remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.50.html',
+    },
+    authTimeoutMs: 60000, // Optional: timeout for authentication in milliseconds
+    qrTimeout: 30000, 
 });
 
 global.authed = false;
@@ -24,12 +30,19 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+client.initialize();
+
+client.on('loading_screen', (percent, message) => {
+  console.log('LOADING SCREEN', percent, message);
+});
+
 client.on("qr", (qr) => {
   console.log("qr", qr);
   
   fs.writeFileSync("./components/last.text", qr);
 });
 client.on('message', msg => {
+  console.log('MESSAGE RECEIVED', msg);
   let textt = msg.body
   console.log(msg.from)
   let phoneNumber = msg.from;
@@ -97,7 +110,7 @@ client.on("message", async (msg) => {
 client.on("disconnected", () => {
   console.log("disconnected");
 });
-client.initialize();
+
 
 const chatRoute = require("./components/chatting");
 const groupRoute = require("./components/group");
